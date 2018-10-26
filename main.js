@@ -38,6 +38,8 @@ GivenParameter.prototype.output = function(text){
     let result = document.getElementById('result');
     
     result.innerHTML = text;
+    }else{
+        result.innerHTML = '';
     }
 }
 
