@@ -43,13 +43,13 @@ const neededObj = function(which){
      return x;
  }
  const renderer = function(amount,currency){
-     var obieqti = document.querySelector('#result');
+     var forRender = document.querySelector('#result');
      var i = 0;
      var curr = neededObj(currency);
      for(var i=0;i<3;i++){
-        obieqti.firstElementChild.children[i].textContent = Object.keys(curr)[i]+':';
-        obieqti.firstElementChild.children[i].appendChild(document.createElement('span'))
-        obieqti.firstElementChild.children[i].firstElementChild.textContent =' '+ (parseFloat(amount[i])).toFixed(2);
+        forRender.firstElementChild.children[i].textContent = Object.keys(curr)[i]+':';
+        forRender.firstElementChild.children[i].appendChild(document.createElement('span'))
+        forRender.firstElementChild.children[i].firstElementChild.textContent =' '+ (parseFloat(amount[i])).toFixed(2);
      }   
  }
 
@@ -62,16 +62,26 @@ currency.addEventListener('change',mainFunction);
 }
 appWork();
 function mainFunction(){
-    var info = new GetInformation(amount.value , currency.value);
-    renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
     
+    var info = new GetInformation(amount.value , currency.value);
+    if(info.amount){
+        document.querySelector('#result').style.display = 'block';
+    renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
+    }else{
+        document.querySelector('#result').style.display = 'none';
+    }
     
 }
 setInterval(function(){
     if(x !=document.querySelector('#input-money').value || y !=document.querySelector('#dropdown-list')){
-        var info = new GetInformation(amount.value , currency.value);
-        renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
 
+        var info = new GetInformation(amount.value , currency.value);
+        if(info.amount){
+            document.querySelector('#result').style.display = 'block';
+        renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
+        }else{
+            document.querySelector('#result').style.display = 'none';
+        }
     }
   }, 500);
 
