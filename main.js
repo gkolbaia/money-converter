@@ -1,63 +1,81 @@
-
-//function Coefficient(){
-    //this.gelX = 1;
-    //this.dollarX = 2.7;
-    //this.euroX = 3;
-    //this.psterlingX = 3.45;}
-
-var coefficients = [1 , 2.7 , 3 , 3.45];
-var answers = [];
-function MainInfo(amount,currnecy){
+var amount = document.querySelector('#input-money');
+var currency = document.querySelector('#dropdown-list');
+var x = amount.value;
+var y = currency.value;
+const store = {
+    'GEL':{
+        'dollar':'0.37',
+        'euro':'0.33',
+        'psterling':'0.29'
+    },
+    'DOLLAR':{
+        'gel':'2.7',
+        'euro':'0.9',
+        'psterling':'0.78'
+    },
+    'EURO':{
+        'dollar':'1.1',
+        'gel':'3',
+        'psterling':'0.87'
+    },
+    'PSTERLING':{
+        'dollar':'1.28',
+        'euro':'1.15',
+        'gel':'3.45'
+    },
+  
+}
+function  GetInformation(amount, currency){
     this.amount = amount;
-    this.currnecy = currnecy;
+    this.currency = currency;
 }
-MainInfo.prototype.calculation = function(){
-    for(var i = 0;i<coefficients.length;i++){
-        //answers.push(this.amount * coefficients[this.currnecy]/coefficients[i] );
-        answers[i] = (this.amount * coefficients[this.currnecy]/coefficients[i]).toFixed(2);
-    }
-    return answers;
-    
-}
-MainInfo.prototype.createText = function(){
-    var results = document.getElementById('result');
-    results.style.display = 'block';
 
-    for( var i = 0; i<answers.length;i++){
-        if((parseFloat(this.amount)).toFixed(2) == answers[i]){ 
-            results.firstElementChild.children[i].style.display = 'none';
-        }else{
-        results.firstElementChild.children[i].firstElementChild.textContent = answers[i]; 
-        results.firstElementChild.children[i].style.display = 'block';
+const neededObj = function(which){
+       
+    return (store[which]);
+ }
+ const calculation = function(amount,currency){
+
+ var x = [];
+        for(var i = 0;i < 3; i++){
+          x.push((Object.values(currency)[i]) *= amount);
         }
-    }
-    
+     return x;
+ }
+ const renderer = function(amount,currency){
+     var obieqti = document.querySelector('#result');
+     var i = 0;
+     var curr = neededObj(currency);
+     for(var i=0;i<3;i++){
+        obieqti.firstElementChild.children[i].textContent = Object.keys(curr)[i]+':';
+        obieqti.firstElementChild.children[i].appendChild(document.createElement('span'))
+        obieqti.firstElementChild.children[i].firstElementChild.textContent =' '+ (parseFloat(amount[i])).toFixed(2);
+     }   
+ }
+
+ 
+
+ 
+const appWork = function(){
+amount.addEventListener('input', mainFunction);
+currency.addEventListener('change',mainFunction);
 }
-
-
-
-document.getElementById('input-money').addEventListener('input',mainFunction);
-document.getElementById('dropdown-list').addEventListener('change',mainFunction);
+appWork();
 function mainFunction(){
-    var amount = document.getElementById('input-money').value;
-    var currnecy = document.getElementById('dropdown-list').value;
-    
-    var k = new MainInfo(amount , currnecy);
-    //console.log(k.calculation()); 
-    k.calculation();
-    k.createText();
+    var info = new GetInformation(amount.value , currency.value);
+    renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
     
     
 }
+setInterval(function(){
+    if(x !=document.querySelector('#input-money').value || y !=document.querySelector('#dropdown-list')){
+        var info = new GetInformation(amount.value , currency.value);
+        renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
 
+    }
+  }, 500);
 
-
-
-
-
-
-
-
+ 
 
 
 
