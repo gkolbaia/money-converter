@@ -1,8 +1,13 @@
-var amount = document.querySelector('#input-money');
-var currency = document.querySelector('#dropdown-list');
-var x = amount.value;
-var y = currency.value;
-const store = {
+var inputAmount = document.getElementById('input-money');
+var inputCurrency = document.getElementById('dropdown-list');
+
+
+function Stock(store){
+this.store = store;
+
+}
+var stock = new Stock({
+
     'GEL':{
         'dollar':'0.37',
         'euro':'0.33',
@@ -25,67 +30,52 @@ const store = {
     },
   
 }
+)
 function  GetInformation(amount, currency){
     this.amount = amount;
     this.currency = currency;
 }
+function UI(){}
+//METODEBI
+UI.prototype.getNeededObject = function(whichStore,whichCurrency){
+    return (whichStore[whichCurrency]);//this.currency
+    
+}
 
-const neededObj = function(which){
-       
-    return (store[which]);
- }
- const calculation = function(amount,currency){
-
- var x = [];
-        for(var i = 0;i < 3; i++){
-          x.push((Object.values(currency)[i]) *= amount);
-        }
-     return x;
- }
- const renderer = function(amount,currency){
-     var forRender = document.querySelector('#result');
-     var i = 0;
-     var curr = neededObj(currency);
-     for(var i=0;i<3;i++){
-        forRender.firstElementChild.children[i].textContent = Object.keys(curr)[i]+':';
-        forRender.firstElementChild.children[i].appendChild(document.createElement('span'))
-        forRender.firstElementChild.children[i].firstElementChild.textContent =' '+ (parseFloat(amount[i])).toFixed(2);
+UI.prototype.calculation = function(amount,object){
+    var answersArray = []
+    for( let i = 0;i<3;i++){
+      answersArray.push(object[i] * amount);    
+    }
+    return answersArray;
+}
+UI.prototype.renderer = function(amount,currency){
+    var results = document.getElementById('result');
+    var curr = currency;
+    for(var i=0;i<3;i++){
+        results.firstElementChild.children[i].textContent = Object.keys(curr)[i]+':';
+        results.firstElementChild.children[i].appendChild(document.createElement('span'))
+        results.firstElementChild.children[i].firstElementChild.textContent =' '+ (parseFloat(amount[i])).toFixed(2);
      }   
- }
-
- 
-
- 
-const appWork = function(){
-amount.addEventListener('input', mainFunction);
-currency.addEventListener('change',mainFunction);
 }
-appWork();
+
+
+
+//EVENT LISTENER
+inputAmount.addEventListener('input',mainFunction);
+inputCurrency.addEventListener('change',mainFunction);
 function mainFunction(){
-    
-    var info = new GetInformation(amount.value , currency.value);
-    if(info.amount){
-        document.querySelector('#result').style.display = 'block';
-    renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
+    if(inputAmount.value > 0){
+    document.getElementById('result').style.display = 'block';
+    var info = new GetInformation(inputAmount.value , inputCurrency.value);
+    var ui = new UI();
+
+    var neededObjectValues = Object.values(ui.getNeededObject(stock.store,info.currency))
+    var answersArray = ui.calculation(info.amount,(neededObjectValues));
+    ui.renderer(answersArray,ui.getNeededObject(stock.store,info.currency));
     }else{
-        document.querySelector('#result').style.display = 'none';
+        document.getElementById('result').style.display = 'none';
+        
     }
     
 }
-setInterval(function(){
-    if(x !=document.querySelector('#input-money').value || y !=document.querySelector('#dropdown-list')){
-
-        var info = new GetInformation(amount.value , currency.value);
-        if(info.amount){
-            document.querySelector('#result').style.display = 'block';
-        renderer(calculation(info.amount,neededObj(info.currency)),info.currency);
-        }else{
-            document.querySelector('#result').style.display = 'none';
-        }
-    }
-  }, 500);
-
- 
-
-
-
