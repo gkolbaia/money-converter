@@ -38,22 +38,21 @@ function  GetInformation(amount, currency){
 function UI(){}
 //METODEBI
 UI.prototype.getNeededObject = function(whichStore,whichCurrency){
-    return (whichStore[whichCurrency]);//this.currency
+    return (whichStore[whichCurrency]);
     
 }
 
-UI.prototype.calculation = function(amount,object){
+UI.prototype.calculation = function(amount,objectValue){
     var answersArray = []
     for( let i = 0;i<3;i++){
-      answersArray.push(object[i] * amount);    
+      answersArray.push(objectValue[i] * amount);    
     }
     return answersArray;
 }
 UI.prototype.renderer = function(amount,currency){
-    var results = document.getElementById('result');
-    var curr = currency;
+    var results = document.getElementById('result'); 
     for(var i=0;i<3;i++){
-        results.firstElementChild.children[i].textContent = Object.keys(curr)[i]+':';
+        results.firstElementChild.children[i].textContent = Object.keys(currency)[i]+':';
         results.firstElementChild.children[i].appendChild(document.createElement('span'))
         results.firstElementChild.children[i].firstElementChild.textContent =' '+ (parseFloat(amount[i])).toFixed(2);
      }   
