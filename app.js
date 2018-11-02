@@ -2,6 +2,10 @@ function Stock(priceValues){
     this.prices = priceValues;
     this.addNewPrice = function(from,to,price){
         this.prices[from][to] = price;
+    
+    }
+    this.getPrice = function(from,to){
+        return this.prices[from][to];
     }
 }
 
